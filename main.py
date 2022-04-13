@@ -37,8 +37,7 @@ def main():
         sword1.update(1)        
         sword2.update(2)
         all_sprite.draw(window_surface)
-        for event in pygame.event.get():
-            
+        for event in pygame.event.get():            
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()

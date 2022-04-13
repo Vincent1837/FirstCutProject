@@ -9,10 +9,9 @@ SPEED_LIMIT = 7
 class Player(pygame.sprite.Sprite):
     def __init__(self,n):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((50,40))
+        self.image = pygame.Surface((60,50))
         self.rect = self.image.get_rect()
-        self.rect.center = (WINDOW_WIDTH/5*(n**2) , GROUND_LEVEL)
-        self.radius = 20
+        self.rect.center = (WINDOW_WIDTH/5*(n**2), GROUND_LEVEL)
         self.speedr = 0
         self.speedl = 0
     def update(self,n):
@@ -27,12 +26,37 @@ class Player(pygame.sprite.Sprite):
                 self.speedr += 1
             if key_pressed[pygame.K_LEFT] and self.speedl < SPEED_LIMIT:
                 self.speedl += 1
+            if key_pressed[pygame.K_DOWN]:                
+                self.squatting()
+            else:
+                self.standing()
+
         else:
             if key_pressed[pygame.K_d] and self.speedr < SPEED_LIMIT:
                 self.speedr += 1            
             if key_pressed[pygame.K_a] and self.speedl < SPEED_LIMIT:
                 self.speedl += 1 
+            if key_pressed[pygame.K_s]:                
+                self.squatting()
+            else:
+                self.standing()
         if self.rect.right > WINDOW_WIDTH:
             self.rect.right = WINDOW_WIDTH
         if self.rect.left < 0:
-            self.rect.left = 0 
+            self.rect.left = 0
+        
+    def standing(self):
+        centerx = self.rect.centerx 
+        centery = GROUND_LEVEL
+        self.image = pygame.Surface((60,50))
+        self.rect = self.image.get_rect()
+        self.rect.center = (centerx, centery)
+    def squatting(self): 
+        bottom = self.rect.midbottom
+        self.image = pygame.Surface((60,30))
+        self.rect = self.image.get_rect()
+        self.rect.midbottom = bottom
+    
+    
+
+               
