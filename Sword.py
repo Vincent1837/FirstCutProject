@@ -7,8 +7,9 @@ GROUND_LEVEL = 400
 class Sword(pygame.sprite.Sprite):
     def __init__(self,n):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((20,50))
-        self.image.fill((255,0,0))
+        sword90_img = pygame.image.load(os.path.join("sword90.png")).convert()   
+        self.ori_image = pygame.transform.scale(sword90_img, (20, 45))
+        self.image = self.ori_image.copy()
         self.rect = self.image.get_rect()
         self.rect.center = (WINDOW_WIDTH/5*(n**2) , GROUND_LEVEL)
         self.rotating = False
@@ -16,6 +17,7 @@ class Sword(pygame.sprite.Sprite):
         self.reverse = False
         self.speedr = 0
         self.speedl = 0
+        self.totaldegree = 0
     def update(self, n):
         '''if self.rotating:
             self.rotate(-3)
@@ -46,14 +48,18 @@ class Sword(pygame.sprite.Sprite):
                 self.speedl += 1 
         if self.rotating == False and self.reverse == False and key_pressed[pygame.K_q]:
             #self.rotating = True
-            self.rotate(45)     
+            self.rotate(1)     
         if self.rect.right > WINDOW_WIDTH:
             self.rect.right = WINDOW_WIDTH
         if self.rect.left < 0:
             self.rect.left = 0 
     def rotate(self,degree):
-        self.image.fill((255,0,0))
-        self.image = pygame.transform.rotate(self.image , degree)
+        self.totaldegree+=degree
+        self.totaldegree = self.totaldegree % 360
+        print(self.totaldegree)
+        self.image = pygame.transform.rotate(self.ori_image , self.totaldegree)
+        center = self.rect.center
         self.rect = self.image.get_rect()
+        self.rect.center = center
         
         
